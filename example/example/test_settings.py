@@ -1,0 +1,4 @@
+from .settings import *
+
+TASTYPROFILE_API_THROTTLE = 5
+TASTYPROFILE_API_TIMEFRAME = 2
