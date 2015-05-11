@@ -10,7 +10,7 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     install_requires=[
-        'tastypie',
+        'django-tastypie',
         'django-recaptcha'
     ],
     license="MIT",
