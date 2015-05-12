@@ -15,8 +15,8 @@ Including another URLconf
 """
 from django.conf import settings
 from django.conf.urls import include, url
+from django.conf.urls.static import static
 from django.contrib import admin
-from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 from tastypie.api import Api
 
@@ -37,11 +37,10 @@ if settings.DEBUG:
             r'^api/v1/doc/',
             include('tastypie_swagger.urls', namespace='tastypie_swagger'),
             kwargs={
-                "tastypie_api_module": "app.urls.v1_api",
+                "tastypie_api_module": "example.urls.v1_api",
                 "namespace": "tastypie_swagger"
             }
-        ),
-        url(
-            r'^media/(?P<path>.*)$', 'django.views.static.serve',
-            {'document_root': settings.MEDIA_ROOT}),
-    ] + urlpatterns + staticfiles_urlpatterns()
+        )
+    ] + urlpatterns + static(
+        settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(
+        settings.STATIC_URL, document_root=settings.STATIC_ROOT)
