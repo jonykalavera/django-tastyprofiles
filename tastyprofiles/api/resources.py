@@ -322,6 +322,7 @@ class UserResourceBase(ModelResource):
             raise BadRequest('Bad data :S')
 
         email = data.get('email', '')
+        status_code = 400
         if self._meta.cache.get(email):
             response = {
                 'success': 'Correo ya enviado',
