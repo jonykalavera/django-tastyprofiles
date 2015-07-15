@@ -220,6 +220,23 @@ class ProfileTestCase(TestCase):
         user = User.objects.get(username='tester')
         self.assertEqual(user.first_name, 'Changed')
 
+    def test_password_reset_invalid_email(self):
+        mail.outbox = []
+        self.client.logout()
+        json_data = json.dumps({
+            'email': 'tester@example'
+        })
+        response = self.client.post(
+            reverse('api_dispatch_password_reset', kwargs={
+                'resource_name': 'user',
+                'api_name': 'v1',
+            }), data=json_data, content_type='application/json')
+        response_data = json.loads(response.content)
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response_data['success'], 'False')
+        error_message = str(response_data['errors']['email'])
+        self.assertIn('Enter a valid email address', error_message)
+
     def test_password_reset(self):
         """
         Test the password reset service.
