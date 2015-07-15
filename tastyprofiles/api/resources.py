@@ -201,8 +201,12 @@ class UserResourceBase(ModelResource):
         Redirect to loged_in user end-point.
         """
         if request.user.is_authenticated():
-            url = reverse('api_dispatch_detail', args=(
-                'v1', 'user', request.user.username,), kwargs={})
+            url = reverse('api_dispatch_detail',
+                          args=(
+                              kwargs.get('api_name') or 'v1',
+                              'user',
+                              request.user.username,),
+                          kwargs={})
             query_string = request.META.get('QUERY_STRING')
 
             if query_string:
