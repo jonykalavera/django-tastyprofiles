@@ -313,10 +313,15 @@ class UserResourceBase(ModelResource):
 
         try:
             data = json.loads(request.body)
-        except:
+        except ValueError:
             raise BadRequest('Bad data :S')
 
         email = data.get('email', '')
+        try:
+            target_user = User.objects.get(email=email)
+        except User.DoesNotExist, e:
+            return self.create_response(request, {'errors': {'email': ['Ambassador not found']}}, status=404)
+
         status_code = 400
         if self._meta.cache.get(email):
             response = {
