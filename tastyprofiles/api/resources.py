@@ -159,8 +159,10 @@ class UserResourceBase(ModelResource):
         if not bundle.data.get('username'):
             bundle.data['username'] = bundle.data.get('email', '')
 
+        # Catch password before super call.
+        password = bundle.data.get('password', '')
         bundle = super(UserResourceBase, self).obj_create(bundle, **kwargs)
-        bundle.obj.set_password(bundle.data.get('password'))
+        bundle.obj.set_password(password)
         bundle.obj.save()
 
         return bundle
