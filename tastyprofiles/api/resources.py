@@ -61,14 +61,15 @@ class UserResourceBase(ModelResource):
                 "name": "login",
                 "http_method": "POST",
                 "resource_type": "list",
-                "description": "Sign in usin email, password credentials.",
+                "description": _("Sign in using email, and password as credentials."),
                 "fields": {
                     "credentials": {
                         "param_type": 'body',
                         "type": "dict",
                         "required": True,
-                        "description": "User credentials to atempt sign-in. "
-                        "Ex. {\"email\":.., \"password\":...}."
+                        "description":
+                            _("User credentials to atempt sign-in. Ex. "
+                              "{\"email\": \"elliot@ecorp.com\", \"password\": \"s3cret\"}.")
                     }
                 }
             },
@@ -76,21 +77,21 @@ class UserResourceBase(ModelResource):
                 "name": "logout",
                 "http_method": "POST",
                 "resource_type": "list",
-                "description": "Logout user.",
+                "description": _("Logout user."),
                 "fields": {}
             },
             {
                 "name": "password-reset",
                 "http_method": "POST",
                 "resource_type": "list",
-                "description": "Password recovery service api.",
+                "description": _("Password recovery service api."),
                 "fields": {
                     "email": {
                         "param_type": 'body',
                         "type": "dict",
                         "required": True,
                         "description":
-                            "Json dict with the email to recive the token."
+                            _("Json dict with the email to recive the token.")
                     }
                 }
             },
@@ -99,14 +100,13 @@ class UserResourceBase(ModelResource):
                 "nickname": "password-reset-confirm",
                 "http_method": "POST",
                 "resource_type": "list",
-                "description": "Password recovery confirmation api.",
+                "description": _("Password recovery confirmation api."),
                 "fields": {
                     "uidb36": {
                         "param_type": 'path',
                         "type": "text",
                         "required": True,
-                        "description":
-                            "Uid encoded as base36."
+                        "description": _("Uid encoded as base36.")
                     },
                     "token": {
                         "param_type": 'path',
@@ -120,8 +120,8 @@ class UserResourceBase(ModelResource):
                         "type": "dict",
                         "required": True,
                         "description":
-                            "Json dict with new_password1 "
-                            "and new_password2 confirmation."
+                            _("Json dict with new_password1 "
+                            "and new_password2 confirmation.")
                     }
                 }
             },
@@ -129,15 +129,15 @@ class UserResourceBase(ModelResource):
                 "name": "password-change",
                 "http_method": "POST",
                 # "resource_type": "list",
-                "description": "Password change self-service api.",
+                "description": _("Password change self-service api."),
                 "fields": {
                     "new_password": {
                         "param_type": 'body',
                         "type": "dict",
                         "required": True,
                         "description":
-                            "Json dict with old_password, new_password1 "
-                            "and new_password2 confirmation."
+                            _("Json dict with old_password, new_password1 "
+                            "and new_password2 confirmation.")
                     }
                 }
             },
@@ -286,7 +286,7 @@ class UserResourceBase(ModelResource):
             try:
                 data = json.loads(request.body)
             except:
-                raise BadRequest('Bad data :S')
+                raise BadRequest(_('Bad data :S'))
             form = CustomPasswordChangeForm(user=request.user, data=data)
             if form.is_valid():
                 form.save()
@@ -301,7 +301,7 @@ class UserResourceBase(ModelResource):
                 response['errors'] = form._errors
         else:
             response['errors'] = {
-                '__all__': _('Password change unsuccessful.')
+                '__all__': _('Unsuccessful password change request.')
             }
 
         bundle = self.build_bundle(data=response, request=request)
@@ -312,22 +312,23 @@ class UserResourceBase(ModelResource):
         Request password reset token service.
         """
         self.method_check(request, allowed=['post'])
+        import ipdb; ipdb.set_trace()
 
         try:
             data = json.loads(request.body)
         except ValueError:
-            raise BadRequest('Bad data :S')
+            raise BadRequest(_('Bad data :S'))
 
         email = data.get('email', '')
         try:
             target_user = User.objects.get(email=email)
         except User.DoesNotExist, e:
-            return self.create_response(request, {'errors': {'email': ['Ambassador not found']}}, status=404)
+            return self.create_response(request, {'errors': {'email': [_('Email address was not found')]}}, status=404)
 
         status_code = 400
         if self._meta.cache.get(email):
             response = {
-                'success': 'Correo ya enviado',
+                'success': _('Email already sent'),
             }
             status_code = 200
             bundle = self.build_bundle(data=response, request=request)
@@ -385,7 +386,7 @@ class UserResourceBase(ModelResource):
             try:
                 data = json.loads(request.body)
             except:
-                raise BadRequest('Bad data :S')
+                raise BadRequest(_('Bad data :S'))
             form = CustomSetPasswordForm(user, data)
             if form.is_valid():
                 form.save()

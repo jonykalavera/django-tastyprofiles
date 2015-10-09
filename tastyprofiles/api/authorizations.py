@@ -1,4 +1,7 @@
 # coding: utf-8
+
+from django.utils.translation import ugettext as _
+
 from tastypie.authorization import Authorization
 from tastypie.exceptions import Unauthorized
 
@@ -14,7 +17,7 @@ class UserAuthorization(Authorization):
         return TASTYPROFILES_PUBLIC_SIGN_UP
 
     def create_list(self, object_list, bundle):
-        return Unauthorized("Sorry, no bulk creation.")
+        return Unauthorized(_("Sorry, no bulk creation."))
 
     def update_list(self, object_list, bundle):
         allowed = []

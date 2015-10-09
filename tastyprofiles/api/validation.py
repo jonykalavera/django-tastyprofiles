@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+
+from django.utils.translation import ugettext as _
+
 from tastypie.validation import CleanedDataFormValidation
 
 
@@ -6,7 +9,7 @@ class UserValidation(CleanedDataFormValidation):
     def __init__(self, **kwargs):
         if 'update_form_class' not in kwargs:
             raise ImproperlyConfigured(
-                "You must provide a 'update_form_class'.")
+                _("You must provide a 'update_form_class'."))
         self._update_form_class = kwargs.pop('update_form_class')
         super(UserValidation, self).__init__(**kwargs)
         self._default_form_class = self.form_class
