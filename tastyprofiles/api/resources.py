@@ -312,7 +312,6 @@ class UserResourceBase(ModelResource):
         Request password reset token service.
         """
         self.method_check(request, allowed=['post'])
-        import ipdb; ipdb.set_trace()
 
         try:
             data = json.loads(request.body)
