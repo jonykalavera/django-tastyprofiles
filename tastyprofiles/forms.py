@@ -164,6 +164,14 @@ class CustomPasswordResetForm(PasswordResetForm):
     """
     Customizations for default Password Reset Form.
     """
+    def get_users(self, email):
+        users = super(CustomPasswordResetForm, self).get_users(email)
+
+        if len([user for user in users]) == 0:
+            raise forms.ValidationError(
+                _('User does not have an usable password'))
+
+        return users
 
 
 class CustomPasswordChangeForm(PasswordChangeForm):
