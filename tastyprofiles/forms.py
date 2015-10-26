@@ -167,11 +167,13 @@ class CustomPasswordResetForm(PasswordResetForm):
     def get_users(self, email):
         users = super(CustomPasswordResetForm, self).get_users(email)
 
-        if len([user for user in users]) == 0:
+        active_users = [user for user in users]
+
+        if len(active_users) == 0:
             raise forms.ValidationError(
                 _('User does not have an usable password'))
 
-        return users
+        return active_users
 
 
 class CustomPasswordChangeForm(PasswordChangeForm):
