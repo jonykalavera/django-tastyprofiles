@@ -15,7 +15,7 @@ class UserValidation(CleanedDataFormValidation):
         self._default_form_class = self.form_class
 
     def is_valid(self, bundle, request=None):
-        if request and request.method in ['PATCH']:
+        if request and request.method in ['PATCH', 'PUT']:
             self.form_class = self._update_form_class
         else:
             self.form_class = self._default_form_class

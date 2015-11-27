@@ -35,7 +35,7 @@ class BaseUserForm(forms.ModelForm):
     class Meta:
         model = User
         exclude = [
-            'id', 'access_token', 'facebook_open_graph', 'new_token_required'
+            'id', 'access_token', 'facebook_open_graph', 'new_token_required',
             'date_joined', 'last_login'
         ]
         widgets = {
@@ -110,8 +110,8 @@ class BaseUserForm(forms.ModelForm):
 
     def clean_last_name(self):
         last_name = self.cleaned_data.get("last_name")
-        if not last_name:
-            raise forms.ValidationError(_('This field is mandatory'))
+        # if not last_name:
+        #     raise forms.ValidationError(_('This field is mandatory'))
         if last_name and len(last_name) < 3:
             raise forms.ValidationError(_('Insert minimum three characters'))
 
@@ -119,9 +119,9 @@ class BaseUserForm(forms.ModelForm):
 
     def clean_first_name(self):
         first_name = self.cleaned_data.get("first_name")
-        if not first_name:
-            raise forms.ValidationError(_('This field is mandatory'))
-        if len(first_name) < 3:
+        # if not first_name:
+        #     raise forms.ValidationError(_('This field is mandatory'))
+        if first_name and len(first_name) < 3:
             raise forms.ValidationError(_('Insert minimum three characters'))
 
         return first_name
@@ -145,19 +145,24 @@ class UpdateUserForm(BaseUserForm):
     """
     Update existing user Form.
     """
-    def clean_last_name(self):
-        last_name = self.cleaned_data.get("last_name")
-        if last_name and len(last_name) < 3:
-            raise forms.ValidationError(_('Insert minimum three characters'))
+    # def clean_last_name(self):
+    #     last_name = self.cleaned_data.get("last_name")
+    #     if last_name and len(last_name) < 3:
+    #         raise forms.ValidationError(_('Insert minimum three characters'))
 
-        return last_name
+    #     return last_name
 
-    def clean_first_name(self):
-        first_name = self.cleaned_data.get("first_name")
-        if len(first_name) < 3:
-            raise forms.ValidationError(_('Insert minimum three characters'))
+    # def clean_first_name(self):
+    #     first_name = self.cleaned_data.get("first_name")
+    #     if first_name and len(first_name) < 3:
+    #         raise forms.ValidationError(_('Insert minimum three characters'))
 
-        return first_name
+    #     return first_name
+    class Meta(BaseUserForm.Meta):
+        """
+        Meta options
+        """
+            
 
 
 class CustomPasswordResetForm(PasswordResetForm):

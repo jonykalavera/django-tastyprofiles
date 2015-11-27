@@ -46,7 +46,8 @@ class UserResourceBase(ModelResource):
             timeframe=TASTYPROFILE_API_TIMEFRAME,
             expiration=TASTYPROFILE_API_EXPIRATION)
         excludes = ['password']
-        post_excludes = ['id']
+        post_excludes = ['id', 'access_token', 'facebook_open_graph', 
+            'new_token_required', 'date_joined', 'last_login']
 
         include_resource_uri = False
         allowed_methods = ['get', 'post', 'patch', 'put']
@@ -165,6 +166,15 @@ class UserResourceBase(ModelResource):
         bundle.obj.set_password(password)
         bundle.obj.save()
 
+        return bundle
+    
+    def obj_update(self, bundle, **kwargs):
+        # Catch password before super call.
+        password = bundle.data.get('password', '')
+        bundle = super(UserResourceBase, self).obj_update(bundle, **kwargs)
+        if password:
+            bundle.obj.set_password(password)
+            bundle.obj.save()
         return bundle
 
     def prepend_urls(self, *args, **kwargs):
