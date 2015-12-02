@@ -167,7 +167,7 @@ class UserResourceBase(ModelResource):
         bundle.obj.save()
 
         return bundle
-    
+
     def obj_update(self, bundle, **kwargs):
         # Catch password before super call.
         password = bundle.data.get('password', '')
@@ -216,7 +216,7 @@ class UserResourceBase(ModelResource):
             return self.get_detail(request, username=request.user.username)
 
         response = {
-            'loged_in': request.user.is_authenticated(),
+            'logged_in': request.user.is_authenticated(),
             'user': request.user,
         }
         return self.create_response(request, response)
