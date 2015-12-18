@@ -76,7 +76,7 @@ class BaseUserForm(forms.ModelForm):
             raise forms.ValidationError(_('Insert minimum six characters'))
         if repeat_password and password != repeat_password:
             raise forms.ValidationError(
-                self.ERROR_MESSAGES['PASSWORD_MISMATCH'])
+                _("The two password fields didn't match."))
         # assert False, not repeat_password
         if not repeat_password and self.instance.pk is None:
             raise forms.ValidationError(_('This field is mandatory'))
