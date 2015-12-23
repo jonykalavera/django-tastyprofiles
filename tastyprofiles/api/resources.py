@@ -20,6 +20,7 @@ from tastypie.exceptions import BadRequest
 from tastypie.resources import ModelResource
 from tastypie.throttle import CacheThrottle
 from tastypie.serializers import Serializer
+from tastypie.utils import trailing_slash
 
 from ..forms import UserForm, UpdateUserForm, \
     CustomPasswordResetForm, CustomPasswordChangeForm, CustomSetPasswordForm
@@ -199,6 +200,9 @@ class UserResourceBase(ModelResource):
                 (self._meta.resource_name, UIDB36_REGEX, TOKEN_REGEX),
                 self.wrap_view('dispatch_password_reset_confirm'),
                 name="api_dispatch_password_reset_confirm"),
+            url(r"^(?P<resource_name>%s)/schema%s$" %
+                (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('get_schema'), name="api_get_schema"),
             url(r"^(?P<resource_name>%s)/(?P<username>[\w\d_.-]+)/$" %
                 self._meta.resource_name, self.wrap_view('dispatch_detail'),
                 name="api_dispatch_detail"),
