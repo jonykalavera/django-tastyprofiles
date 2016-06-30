@@ -28,6 +28,6 @@ class UserResource(BaseUserResource):
     class Meta(BaseUserResource.Meta):
         pass
 ```
+Forked from: https://git.interalia.net/osc/django-tastyprofile
 
-R&D Interalia.net 2015
-@jonykalavera
+by @jonykalavera
