@@ -1,8 +1,6 @@
 # coding: utf-8
-import datetime
-
+import hashlib
 from django import forms
-from django.conf import settings
 from django.core.cache import cache
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import (
@@ -11,10 +9,6 @@ from django.contrib.auth.forms import (
     PasswordResetForm, PasswordChangeForm,
     SetPasswordForm
 )
-from django.contrib.auth.tokens import default_token_generator
-from django.contrib.sites.models import get_current_site
-from django.utils.http import int_to_base36
-from django.template import loader
 from django.utils.translation import ugettext as _
 
 from captcha.fields import ReCaptchaField
@@ -162,7 +156,7 @@ class UpdateUserForm(BaseUserForm):
         """
         Meta options
         """
-            
+        pass
 
 
 class CustomPasswordResetForm(PasswordResetForm):
